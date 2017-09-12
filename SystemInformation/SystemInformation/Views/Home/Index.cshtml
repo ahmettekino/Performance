@@ -13,29 +13,27 @@
 </table>
 
 <script type="text/javascript">
-    setTimeout(function () { getInformations() }, 1000 * 30);
 
-    function getInformations() {
+    setInterval(function () { getInformations(false) }, 1000);
+
+    function getInformations(isFirstCall) {
         $.ajax({
             method: "POST",
-            data: { CurrentClockSpeed: $("#CurrentClockSpeed").html(), TotalVisibleUsageMemorySize: $("#TotalVisibleUsageMemorySize").html(), SpeedNetwork: $("#SpeedNetwork").html() },
             url: "/Home/SystemInformation",
             dataType: 'JSON',
             success: function (response) {
-                var a = $("#CurrentClockSpeed").html();
+                if (isFirstCall ==false) {
+                    if (parseFloat($("#CurrentClockSpeed").html()) < response.CurrentClockSpeed) {
+                        alert("CPU Performansı düştü");
+                    }
 
-                if (a > response.CurrentClockSpeed) {
+                    if (parseFloat($("#TotalVisibleUsageMemorySize").html()) < response.TotalVisibleUsageMemorySize) {
+                        alert("RAM Performansı düştü");
+                    }
 
-                }
-
-                var b = $("#TotalVisibleUsageMemorySize").html();
-                if (b > response.TotalVisibleUsageMemorySize) {
-
-                }
-
-                var c = $("#CurrentClockSpeed").html();
-                if (c > response.SpeedNetwork) {
-
+                    if (parseFloat($("#SpeedNetwork").html()) > response.SpeedNetwork) {
+                        alert("Network Performansı düştü");
+                    }
                 }
 
                 $("#CurrentClockSpeed").text(response.CurrentClockSpeed);
@@ -47,7 +45,8 @@
             }
         });
     }
-    getInformations();
+
+    getInformations(true);
 </script>
 
 
