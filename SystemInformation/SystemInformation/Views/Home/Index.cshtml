@@ -1,0 +1,54 @@
+﻿
+<table border="1" cellpadding="10">
+    <tr>
+        <th>CurrentClockSpeed</th>
+        <th>TotalVisibleUsageMemorySize</th>
+        <th>SpeedNetwork</th>
+    </tr>
+    <tr>
+        <td id="CurrentClockSpeed"></td>
+        <td id="TotalVisibleUsageMemorySize"></td>
+        <td id="SpeedNetwork"></td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    setTimeout(function () { getInformations() }, 1000 * 30);
+
+    function getInformations() {
+        $.ajax({
+            method: "POST",
+            data: { CurrentClockSpeed: $("#CurrentClockSpeed").html(), TotalVisibleUsageMemorySize: $("#TotalVisibleUsageMemorySize").html(), SpeedNetwork: $("#SpeedNetwork").html() },
+            url: "/Home/SystemInformation",
+            dataType: 'JSON',
+            success: function (response) {
+                var a = $("#CurrentClockSpeed").html();
+
+                if (a > response.CurrentClockSpeed) {
+
+                }
+
+                var b = $("#TotalVisibleUsageMemorySize").html();
+                if (b > response.TotalVisibleUsageMemorySize) {
+
+                }
+
+                var c = $("#CurrentClockSpeed").html();
+                if (c > response.SpeedNetwork) {
+
+                }
+
+                $("#CurrentClockSpeed").text(response.CurrentClockSpeed);
+                $("#TotalVisibleUsageMemorySize").text(response.TotalVisibleUsageMemorySize);
+                $("#SpeedNetwork").text(response.SpeedNetwork);
+            },
+            error: function (xhr) {
+
+            }
+        });
+    }
+    getInformations();
+</script>
+
+
+
